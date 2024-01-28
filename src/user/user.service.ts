@@ -1,0 +1,105 @@
+// nest.js modules
+import {
+	Injectable,
+	NotFoundException,
+	ForbiddenException,
+	ConflictException,
+} from "@nestjs/common"
+import { InjectModel } from "@nestjs/mongoose"
+
+// types
+import { Model } from "mongoose"
+import { Role } from "../role/role.enum"
+
+// schema
+import { User, UserDocument } from "./user.schema"
+import { Review, ReviewDocument } from "../review/review.schema"
+
+// DTOs
+import { CreateUserDto, UpdateUserDto } from "./user.dto"
+
+@Injectable()
+export class UserService {
+	constructor(
+		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+		@InjectModel(Review.name)
+		private readonly reviewModel: Model<ReviewDocument>,
+	) {}
+
+	async getUsers() {
+		const users = await this.userModel.find()
+
+		return { users }
+	}
+
+	async createUser(dto: CreateUserDto) {
+		console.log(dto)
+		let user = await this.userModel.findOne({
+			email: dto.email,
+		})
+
+		if (user)
+			throw new ConflictException([
+				"A user already exists with the entered email",
+			])
+
+		user = await this.userModel.create(dto)
+
+		user.password = undefined
+
+		return { user }
+	}
+
+	async getUser(id: string) {
+		const user = await this.userModel.findById(id)
+
+		if (!user)
+			throw new NotFoundException(["No user found with the entered ID"])
+
+		return { user }
+	}
+
+	async updateUser(
+		id: string,
+		dto: UpdateUserDto,
+		currentUser: UserDocument,
+	) {
+		const user = await this.userModel.findById(id)
+
+		if (!user) {
+			throw new NotFoundException(["No user found with the entered ID"])
+		}
+
+		if (currentUser.id !== user.id) {
+			throw new ForbiddenException([
+				"The current user can't access this resource",
+			])
+		}
+
+		user.name = dto.name
+		user.phone = dto.phone
+		user.role = currentUser.role === Role.Admin ? dto.role : user.role
+
+		await user.save()
+
+		return { user }
+	}
+
+	async deleteUser(id: string, currentUser: UserDocument) {
+		const user = await this.userModel.findById(id)
+
+		if (!user)
+			throw new NotFoundException(["No user found with the entered ID"])
+
+		if (currentUser.id !== user.id)
+			throw new ForbiddenException([
+				"The current user can't access this resource",
+			])
+
+		await user.deleteOne()
+
+		await this.reviewModel.deleteMany({ user: user._id })
+
+		return {}
+	}
+}
