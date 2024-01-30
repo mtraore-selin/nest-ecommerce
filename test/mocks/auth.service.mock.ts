@@ -8,7 +8,7 @@ export const userDTOMock = {
 	phone: "0777777777",
 	password: "yourSecurePassword",
 }
-export const token = "token"
+export const token = "test"
 export class AuthServiceMock {
 	signup = jest.fn().mockResolvedValue(signupDTOMock)
 
@@ -16,7 +16,7 @@ export class AuthServiceMock {
 
 	updatePassword = jest.fn().mockRejectedValue(userDTOMock)
 
-	forgotPassword = jest.fn()
+	forgotPassword = jest.fn().mockRejectedValue({ message: "success" })
 
 	resetPassword = jest.fn()
 }

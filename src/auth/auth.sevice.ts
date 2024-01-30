@@ -117,7 +117,7 @@ export class AuthService {
 				html: message,
 			})
 		} catch (err) {
-			console.log(err)
+			console.error(err)
 			user.resetPasswordToken = undefined
 			user.resetPasswordExpire = undefined
 
