@@ -1,12 +1,12 @@
 export const signupDTOMock = {
 	phone: "0777777777",
-	password: "yourSecurePassword",
+	password: "test",
 }
 export const userDTOMock = {
 	name: "John Doe",
 	email: "john@example.com",
 	phone: "0777777777",
-	password: "yourSecurePassword",
+	password: "test",
 }
 export const token = "test"
 export class AuthServiceMock {

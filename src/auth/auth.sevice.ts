@@ -25,12 +25,14 @@ import {
 } from "./auth.dto"
 
 // utils
-import { sendEmail } from "../utils/sendEmail"
+// import { sendEmail } from "../utils/sendEmail"
+import { SendMailService } from "../utils/send-mail/send-mail.service"
 
 @Injectable()
 export class AuthService {
 	constructor(
 		@InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+		private readonly mailService: SendMailService,
 	) {}
 
 	async signup(dto: SignupDto) {
@@ -111,7 +113,7 @@ export class AuthService {
 		<br /><br />Thank you, <br />M. TRAORE`
 
 		try {
-			await sendEmail({
+			await this.mailService.sendEmail({
 				subject: "Password reset link - Expires in 10 minutes",
 				to: email,
 				html: message,

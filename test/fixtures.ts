@@ -1,13 +1,10 @@
-import jsonwebtoken from "jsonwebtoken"
+// import jsonwebtoken from "jsonwebtoken"
+import { sign } from "jsonwebtoken"
 
-export const ACCESS_TOKEN =
+export const ACCESS_TOKEN_NO_EXPIRE =
 	"Bearer " +
-	jsonwebtoken.sign(
-		{
-			username: "USERNAME",
-			password: "PASSWORD",
-		},
-		"signkey",
-	)
+	sign({ id: "65b5788588f4b2bb905e2fac" }, process.env.JWT_SECRET, {
+		expiresIn: process.env.JWT_EXPIRE,
+	})
 
 /***************** -  *****************/

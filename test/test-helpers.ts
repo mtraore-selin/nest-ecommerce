@@ -3,7 +3,10 @@ import { INestApplication } from "@nestjs/common"
 import { NestFactory } from "@nestjs/core"
 import { AppModule } from "../src/app.module"
 import * as supertest from "supertest"
-import { mockUserDecorator } from "./mocks/decorators.mock"
+// import { ACCESS_TOKEN } from "./fixtures"
+
+export const ACCESS_TOKEN =
+	"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YjYzZDc2MjUxYzYxNTAxOWNlZWE2NyIsImlhdCI6MTcwNjQ1OTk1MiwiZXhwIjoxNzA2NTQ2MzUyfQ.Zu-4Wemz_bicZ8EIoYxP3FYYi90H9M0SmhHslkMW1Vg"
 
 export type SuperTestHelper = {
 	get: (path: string) => supertest.Request
@@ -28,13 +31,6 @@ export type AppContext = {
 }
 
 export async function setupApplication(): Promise<AppContext> {
-	const ACCESS_TOKEN = "test"
-
-	// Override the User decorator with the mock
-	jest.mock("@nestjs/common", () => ({
-		...jest.requireActual("@nestjs/common"),
-		User: mockUserDecorator,
-	}))
 	const application: INestApplication = await NestFactory.create(AppModule)
 
 	await application.init()
@@ -43,7 +39,7 @@ export async function setupApplication(): Promise<AppContext> {
 		req
 			.set("Accept", "application/json")
 			.set("Content-Type", "application/json")
-			.set("Authorization", ACCESS_TOKEN)
+			.set("Authorization", `Bearer ${ACCESS_TOKEN}`)
 
 	return {
 		application,

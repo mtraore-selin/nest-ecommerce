@@ -63,7 +63,7 @@ export class ProductService {
 		const product = await this.productModel.findById(id)
 
 		if (!product) {
-			return { message: "Product not found" }
+			throw new NotFoundException(["Product not found"])
 		}
 
 		await Promise.all([
