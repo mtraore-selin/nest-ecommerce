@@ -33,7 +33,6 @@ export class UserService {
 	}
 
 	async createUser(dto: CreateUserDto) {
-		console.log(dto)
 		let user = await this.userModel.findOne({
 			email: dto.email,
 		})

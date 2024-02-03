@@ -37,8 +37,6 @@ export class Review {
 	rating: number
 
 	@ApiProperty({
-		type: String,
-		format: "mongo-id",
 		required: true,
 		description: "User ID (mongo ID)",
 	})
@@ -46,8 +44,6 @@ export class Review {
 	user: Types.ObjectId & User
 
 	@ApiProperty({
-		type: String,
-		format: "mongo-id",
 		required: true,
 		description: "Product ID (mongo ID)",
 	})

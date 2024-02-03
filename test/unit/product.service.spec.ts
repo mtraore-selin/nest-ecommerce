@@ -5,8 +5,7 @@ import { AppContext, setupApplication } from "../../test/test-helpers"
 import { Model } from "mongoose"
 import { NotFoundException } from "@nestjs/common"
 import { ProductDto } from "src/product/product.dto"
-
-const jsonParsed = (data: any) => JSON.parse(JSON.stringify(data))
+import { jsonParsed } from "../../test/fixtures"
 
 describe("ProductService", () => {
 	let appContext: AppContext

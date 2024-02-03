@@ -8,3 +8,5 @@ export const ACCESS_TOKEN_NO_EXPIRE =
 	})
 
 /***************** -  *****************/
+
+export const jsonParsed = (data: any) => JSON.parse(JSON.stringify(data))

@@ -21,7 +21,7 @@ export enum Category {
 @Schema({
 	toJSON: { virtuals: true },
 	toObject: { virtuals: true },
-	id: false,
+	id: true,
 })
 export class Product {
 	@Prop({ required: true, maxlength: 100 })
@@ -51,6 +51,13 @@ export class Product {
 		description: "Rating of the product",
 	})
 	rating: number
+
+	@Prop()
+	@ApiProperty({
+		example: 4.5,
+		description: "Average Rating of the product",
+	})
+	averageRating?: number
 
 	@Prop()
 	@ApiProperty({
@@ -104,3 +111,4 @@ ProductSchema.virtual("reviews", {
 	localField: "_id",
 	foreignField: "product",
 })
+//TODO: understand this
